@@ -1,6 +1,10 @@
 import React from 'react';
 import { ConfigProvider, theme, App as AntApp } from 'antd';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { TenantProvider } from '@/context/TenantContext';
 
@@ -18,6 +22,8 @@ import Tables from '@/pages/Tables';
 import KDS from '@/pages/KDS';
 import Subscription from '@/pages/Subscription';
 import NotFound from './pages/NotFound';
+
+const queryClient = new QueryClient();
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -121,25 +127,31 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#FF6B35',
-          borderRadius: 8,
-        },
-        algorithm: theme.defaultAlgorithm,
-      }}
-    >
-      <AntApp>
-        <BrowserRouter>
-          <AuthProvider>
-            <TenantProvider>
-              <AppRoutes />
-            </TenantProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </AntApp>
-    </ConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#FF6B35',
+              borderRadius: 8,
+            },
+            algorithm: theme.defaultAlgorithm,
+          }}
+        >
+          <AntApp>
+            <BrowserRouter>
+              <AuthProvider>
+                <TenantProvider>
+                  <Toaster />
+                  <Sonner />
+                  <AppRoutes />
+                </TenantProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </AntApp>
+        </ConfigProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 
