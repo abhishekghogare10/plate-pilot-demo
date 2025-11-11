@@ -1,0 +1,86 @@
+import { Plan } from '@/types';
+
+export const plans: Plan[] = [
+  {
+    id: 'basic',
+    name: 'Basic',
+    price: 1999,
+    currency: 'INR',
+    billingPeriod: 'monthly',
+    limits: {
+      outlets: 1,
+      users: 2,
+      menuItems: 150,
+      ordersPerMonth: 3000,
+    },
+    features: [
+      'POS Billing',
+      'Menu Management',
+      'Basic Reports',
+      'Email Support',
+    ],
+  },
+  {
+    id: 'core',
+    name: 'Core',
+    price: 4999,
+    currency: 'INR',
+    billingPeriod: 'monthly',
+    limits: {
+      outlets: 2,
+      users: 5,
+      menuItems: 500,
+      ordersPerMonth: 10000,
+    },
+    features: [
+      'Everything in Basic',
+      'KOT & KDS',
+      'Table Management',
+      'Inventory Tracking',
+      'CRM & Loyalty',
+      'Priority Support',
+    ],
+  },
+  {
+    id: 'growth',
+    name: 'Growth',
+    price: 9999,
+    currency: 'INR',
+    billingPeriod: 'monthly',
+    limits: {
+      outlets: 5,
+      users: 15,
+      menuItems: 1500,
+      ordersPerMonth: 50000,
+    },
+    features: [
+      'Everything in Core',
+      'Online Ordering Integration',
+      'Advanced Reports',
+      'Multi-outlet Management',
+      'WhatsApp Integration',
+      'Dedicated Account Manager',
+    ],
+  },
+  {
+    id: 'enterprise',
+    name: 'Enterprise',
+    price: 0,
+    currency: 'INR',
+    billingPeriod: 'monthly',
+    limits: {
+      outlets: 9999,
+      users: 9999,
+      menuItems: 9999,
+      ordersPerMonth: 9999999,
+    },
+    features: [
+      'Everything in Growth',
+      'Unlimited Everything',
+      'Custom Integrations',
+      'API Access',
+      'White Labeling',
+      '24/7 Phone Support',
+    ],
+  },
+];
