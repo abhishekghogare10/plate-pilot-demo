@@ -21,6 +21,13 @@ import Menu from '@/pages/Menu';
 import Tables from '@/pages/Tables';
 import KDS from '@/pages/KDS';
 import Subscription from '@/pages/Subscription';
+import Orders from '@/pages/Orders';
+import Inventory from '@/pages/Inventory';
+import CRM from '@/pages/CRM';
+import OnlineOrders from '@/pages/OnlineOrders';
+import Accounting from '@/pages/Accounting';
+import Reports from '@/pages/Reports';
+import Settings from '@/pages/Settings';
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
