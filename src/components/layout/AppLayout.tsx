@@ -19,6 +19,7 @@ import {
   CreditCardOutlined,
   SettingOutlined,
   FireOutlined,
+  MailOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -129,6 +130,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       icon: <CreditCardOutlined />,
       label: 'Subscription',
       permission: 'MANAGE_SUBSCRIPTION',
+    },
+    {
+      key: '/email-templates',
+      icon: <MailOutlined />,
+      label: 'Email Templates',
+      permission: 'MANAGE_SETTINGS',
     },
     {
       key: '/settings',
