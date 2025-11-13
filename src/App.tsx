@@ -28,6 +28,7 @@ import OnlineOrders from '@/pages/OnlineOrders';
 import Accounting from '@/pages/Accounting';
 import Reports from '@/pages/Reports';
 import Settings from '@/pages/Settings';
+import EmailTemplates from '@/pages/EmailTemplates';
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -181,6 +182,16 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <AppLayout>
               <Settings />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/email-templates"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <EmailTemplates />
             </AppLayout>
           </ProtectedRoute>
         }
