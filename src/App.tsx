@@ -116,11 +116,71 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/subscription/plans"
+        path="/orders"
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Subscription />
+              <Orders />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/inventory"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Inventory />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/crm"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <CRM />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/online-orders"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <OnlineOrders />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/accounting"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Accounting />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Reports />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <Settings />
             </AppLayout>
           </ProtectedRoute>
         }
