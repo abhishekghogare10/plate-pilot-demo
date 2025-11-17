@@ -18,6 +18,7 @@ import {
   Statistic,
   Badge,
 } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import {
   PlusOutlined,
   WarningOutlined,
@@ -42,12 +43,11 @@ const Inventory: React.FC = () => {
   const lowStockItems = items.filter(item => item.currentStock < item.minStock);
   const totalValue = items.reduce((sum, item) => sum + (item.currentStock * item.costPerUnit), 0);
 
-  const itemColumns = [
+  const itemColumns: ColumnsType<any> = [
     {
       title: 'Item Name',
       dataIndex: 'name',
       key: 'name',
-      fixed: 'left' as const,
       width: 200,
     },
     {
@@ -55,6 +55,7 @@ const Inventory: React.FC = () => {
       dataIndex: 'category',
       key: 'category',
       width: 150,
+      responsive: ['md'] as const,
     },
     {
       title: 'Current Stock',
@@ -77,12 +78,14 @@ const Inventory: React.FC = () => {
       dataIndex: 'minStock',
       key: 'minStock',
       width: 100,
+      responsive: ['lg'] as const,
       render: (min: number, record: any) => `${min} ${record.unit}`,
     },
     {
       title: 'Stock Level',
       key: 'level',
       width: 150,
+      responsive: ['xl'] as const,
       render: (_: any, record: any) => {
         const percent = (record.currentStock / record.minStock) * 100;
         return (
@@ -99,12 +102,14 @@ const Inventory: React.FC = () => {
       dataIndex: 'costPerUnit',
       key: 'costPerUnit',
       width: 120,
+      responsive: ['lg'] as const,
       render: (cost: number) => formatCurrency(cost),
     },
     {
       title: 'Total Value',
       key: 'totalValue',
       width: 130,
+      responsive: ['xl'] as const,
       render: (_: any, record: any) => 
         formatCurrency(record.currentStock * record.costPerUnit),
     },
@@ -113,18 +118,19 @@ const Inventory: React.FC = () => {
       dataIndex: 'supplier',
       key: 'supplier',
       width: 180,
+      responsive: ['md'] as const,
     },
     {
       title: 'Last Restocked',
       dataIndex: 'lastRestocked',
       key: 'lastRestocked',
       width: 130,
+      responsive: ['lg'] as const,
       render: (date: Date) => dayjs(date).format('DD MMM YYYY'),
     },
     {
       title: 'Actions',
       key: 'actions',
-      fixed: 'right' as const,
       width: 150,
       render: () => (
         <Space>
