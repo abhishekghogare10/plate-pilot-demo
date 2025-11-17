@@ -19,6 +19,7 @@ All colors MUST be HSL.
 
     --primary: 32 95% 54%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 32 95% 70%;
 
     --secondary: 40 96% 95%;
     --secondary-foreground: 32 95% 35%;
@@ -46,6 +47,18 @@ All colors MUST be HSL.
     --ring: 32 95% 54%;
 
     --radius: 0.5rem;
+    
+    /* Enhanced design tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(32 95% 54%), hsl(32 95% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(40 96% 98%));
+    --shadow-sm: 0 1px 2px 0 hsl(24 10% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(24 10% 10% / 0.1), 0 2px 4px -2px hsl(24 10% 10% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(24 10% 10% / 0.1), 0 4px 6px -4px hsl(24 10% 10% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(24 10% 10% / 0.1), 0 8px 10px -6px hsl(24 10% 10% / 0.1);
+    --shadow-glow: 0 0 40px hsl(32 95% 70% / 0.3);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -60,6 +73,7 @@ All colors MUST be HSL.
 
     --primary: 32 95% 54%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 32 95% 70%;
 
     --secondary: 24 10% 15%;
     --secondary-foreground: 40 20% 96%;
@@ -85,6 +99,18 @@ All colors MUST be HSL.
     --border: 24 10% 20%;
     --input: 24 10% 20%;
     --ring: 32 95% 54%;
+    
+    /* Enhanced design tokens for dark mode */
+    --gradient-primary: linear-gradient(135deg, hsl(32 95% 54%), hsl(32 95% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(24 10% 8%), hsl(24 10% 12%));
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.2);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -2px hsl(0 0% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.4), 0 4px 6px -4px hsl(0 0% 0% / 0.4);
+    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.5), 0 8px 10px -6px hsl(0 0% 0% / 0.5);
+    --shadow-glow: 0 0 40px hsl(32 95% 70% / 0.5);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -95,5 +121,51 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/30;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+}
+
+@layer utilities {
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-fast {
+    transition: var(--transition-fast);
+  }
+  
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-subtle {
+    background: var(--gradient-subtle);
   }
 }
