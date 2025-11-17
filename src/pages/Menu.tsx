@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Table, Button, Space, Tag, Input, Select, Modal, Form, InputNumber, Switch, message } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import { menuItems as initialMenuItems, categories } from '@/mocks/menu';
 import { formatCurrency } from '@/utils/format';
@@ -33,12 +34,13 @@ const Menu: React.FC = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: 'Code',
       dataIndex: 'code',
       key: 'code',
       width: 100,
+      responsive: ['md'],
     },
     {
       title: 'Name',
@@ -51,6 +53,7 @@ const Menu: React.FC = () => {
       dataIndex: 'categoryId',
       key: 'category',
       width: 150,
+      responsive: ['lg'],
       render: (catId: string) => categories.find(c => c.id === catId)?.name || '-',
     },
     {
@@ -65,6 +68,7 @@ const Menu: React.FC = () => {
       dataIndex: 'tags',
       key: 'tags',
       width: 250,
+      responsive: ['lg'],
       render: (tags: string[]) => (
         <>
           {tags.map(tag => (
@@ -80,12 +84,14 @@ const Menu: React.FC = () => {
       dataIndex: 'station',
       key: 'station',
       width: 120,
+      responsive: ['xl'],
     },
     {
       title: 'Available',
       dataIndex: 'available',
       key: 'available',
       width: 100,
+      responsive: ['md'],
       render: (available: boolean) => (
         <Tag color={available ? 'success' : 'error'}>
           {available ? 'Yes' : 'No'}
@@ -96,7 +102,6 @@ const Menu: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       width: 150,
-      fixed: 'right' as const,
       render: (_: any, record: any) => (
         <Space>
           <Button

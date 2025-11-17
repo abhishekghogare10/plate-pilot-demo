@@ -16,6 +16,7 @@ import {
   Row,
   Col,
 } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import { 
   SearchOutlined, 
   EyeOutlined, 
@@ -71,7 +72,7 @@ const Orders: React.FC = () => {
     return true;
   });
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: 'Order #',
       dataIndex: 'orderNumber',
