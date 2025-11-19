@@ -17,7 +17,6 @@ import {
   Progress,
   Badge,
 } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
 import {
   PlusOutlined,
   SearchOutlined,
@@ -53,10 +52,11 @@ const CRM: React.FC = () => {
   const avgVisits = customers.reduce((sum, c) => sum + c.visits, 0) / customers.length;
   const avgNPS = feedback.reduce((sum, f) => sum + f.nps, 0) / feedback.length;
 
-  const customerColumns: ColumnsType<any> = [
+  const customerColumns = [
     {
       title: 'Customer',
       key: 'customer',
+      fixed: 'left' as const,
       width: 200,
       render: (_: any, record: any) => (
         <Space direction="vertical" size={0}>
@@ -73,7 +73,6 @@ const CRM: React.FC = () => {
       dataIndex: 'tier',
       key: 'tier',
       width: 100,
-      responsive: ['md'] as const,
       render: (tier: string) => (
         <Tag color={tierColors[tier]} icon={<CrownOutlined />}>
           {tier}
@@ -85,7 +84,6 @@ const CRM: React.FC = () => {
       dataIndex: 'visits',
       key: 'visits',
       width: 80,
-      responsive: ['lg'] as const,
       sorter: (a: any, b: any) => a.visits - b.visits,
     },
     {
@@ -103,7 +101,6 @@ const CRM: React.FC = () => {
       dataIndex: 'loyaltyPoints',
       key: 'loyaltyPoints',
       width: 130,
-      responsive: ['xl'] as const,
       render: (points: number) => (
         <Space>
           <GiftOutlined className="text-primary" />
@@ -116,7 +113,6 @@ const CRM: React.FC = () => {
       dataIndex: 'tags',
       key: 'tags',
       width: 200,
-      responsive: ['lg'] as const,
       render: (tags: string[]) => (
         <Space wrap>
           {tags.map(tag => (
@@ -130,12 +126,12 @@ const CRM: React.FC = () => {
       dataIndex: 'lastOrder',
       key: 'lastOrder',
       width: 130,
-      responsive: ['md'] as const,
       render: (date?: Date) => date ? dayjs(date).format('DD MMM YYYY') : '-',
     },
     {
       title: 'Actions',
       key: 'actions',
+      fixed: 'right' as const,
       width: 150,
       render: () => (
         <Space>
