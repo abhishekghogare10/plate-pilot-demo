@@ -169,3 +169,87 @@ All colors MUST be HSL.
     background: var(--gradient-subtle);
   }
 }
+
+@layer components {
+  /* Ant Design global theming using design tokens */
+  .ant-layout,
+  .ant-layout-content {
+    @apply bg-background text-foreground;
+  }
+
+  .ant-card {
+    @apply bg-card text-foreground border border-border shadow-md;
+  }
+
+  .dark .ant-card {
+    @apply bg-card text-foreground border-border;
+  }
+
+  .ant-card-head {
+    @apply bg-card text-foreground border-border;
+  }
+
+  .ant-table,
+  .ant-table-container,
+  .ant-table-body {
+    @apply bg-card text-foreground;
+  }
+
+  .ant-table-thead > tr > th {
+    @apply bg-muted text-foreground border-border;
+  }
+
+  .dark .ant-table-thead > tr > th {
+    @apply bg-secondary text-secondary-foreground border-border;
+  }
+
+  .ant-table-tbody > tr > td {
+    @apply bg-card text-foreground border-border;
+  }
+
+  .dark .ant-table-tbody > tr.ant-table-row:hover > td {
+    @apply bg-muted;
+  }
+
+  .ant-input,
+  .ant-select-selector,
+  .ant-input-affix-wrapper,
+  .ant-picker,
+  .ant-picker-input > input {
+    @apply bg-background text-foreground border border-input;
+  }
+
+  .ant-input::placeholder,
+  .ant-picker-input > input::placeholder {
+    @apply text-muted-foreground;
+  }
+
+  .dark .ant-input,
+  .dark .ant-select-selector,
+  .dark .ant-input-affix-wrapper,
+  .dark .ant-picker,
+  .dark .ant-picker-input > input {
+    @apply bg-secondary text-secondary-foreground border-border;
+  }
+
+  .ant-btn-primary {
+    @apply bg-primary text-primary-foreground border-primary shadow-sm;
+  }
+
+  .ant-btn-default {
+    @apply bg-background text-foreground border-border;
+  }
+
+  .ant-btn-link {
+    @apply text-primary;
+  }
+
+  .dark .ant-btn-default {
+    @apply bg-secondary text-secondary-foreground border-border;
+  }
+
+  .ant-badge-count {
+    @apply bg-destructive text-destructive-foreground;
+  }
+}
+
