@@ -14,7 +14,7 @@ import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
 
 // App Pages
-import AppLayout from '@/components/layout/AppLayout';
+import ResponsiveAppLayout from '@/components/layout/ResponsiveAppLayout';
 import Dashboard from '@/pages/Dashboard';
 import POS from '@/pages/POS';
 import Menu from '@/pages/Menu';
@@ -60,9 +60,9 @@ const AppRoutes = () => {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Dashboard />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -70,9 +70,9 @@ const AppRoutes = () => {
         path="/pos"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <POS />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -80,9 +80,9 @@ const AppRoutes = () => {
         path="/menu"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Menu />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -90,9 +90,9 @@ const AppRoutes = () => {
         path="/tables"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Tables />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -100,9 +100,9 @@ const AppRoutes = () => {
         path="/kds"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <KDS />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -110,9 +110,9 @@ const AppRoutes = () => {
         path="/subscription"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Subscription />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -120,9 +120,9 @@ const AppRoutes = () => {
         path="/orders"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Orders />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -130,9 +130,9 @@ const AppRoutes = () => {
         path="/inventory"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Inventory />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -140,9 +140,9 @@ const AppRoutes = () => {
         path="/crm"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <CRM />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -150,9 +150,9 @@ const AppRoutes = () => {
         path="/online-orders"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <OnlineOrders />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -160,9 +160,9 @@ const AppRoutes = () => {
         path="/accounting"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Accounting />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -170,9 +170,9 @@ const AppRoutes = () => {
         path="/reports"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Reports />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -180,9 +180,9 @@ const AppRoutes = () => {
         path="/settings"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <Settings />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
@@ -190,9 +190,9 @@ const AppRoutes = () => {
         path="/email-templates"
         element={
           <ProtectedRoute>
-            <AppLayout>
+            <ResponsiveAppLayout>
               <EmailTemplates />
-            </AppLayout>
+            </ResponsiveAppLayout>
           </ProtectedRoute>
         }
       />
