@@ -128,21 +128,21 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border">
-      <SidebarHeader className="h-16 flex items-center justify-center border-b border-border">
+    <Sidebar collapsible="icon" className="border-r border-border bg-card">
+      <SidebarHeader className="h-16 flex items-center justify-center border-b border-border bg-card">
         {open ? (
           <div className="flex items-center gap-2">
             <ShopOutlined className="text-2xl text-primary" />
-            <h1 className="text-xl font-bold text-primary">RestaurantPOS</h1>
+            <h1 className="text-xl font-bold text-foreground">RestaurantPOS</h1>
           </div>
         ) : (
           <ShopOutlined className="text-2xl text-primary" />
         )}
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="bg-card">
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {filteredMenuItems.map((item) => {

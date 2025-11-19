@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useTenant } from '@/context/TenantContext';
 import { useTheme } from '@/context/ThemeContext';
 import { AppSidebar } from '@/components/AppSidebar';
+import { NotificationDropdown } from '@/components/NotificationDropdown';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -16,8 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { LogOut, User, Bell, Moon, Sun, Store } from 'lucide-react';
+import { LogOut, User, Moon, Sun, Store } from 'lucide-react';
 
 interface ResponsiveAppLayoutProps {
   children: React.ReactNode;
@@ -39,9 +39,9 @@ const ResponsiveAppLayout: React.FC<ResponsiveAppLayoutProps> = ({ children }) =
       <div className="flex min-h-screen w-full bg-background">
         <AppSidebar />
         
-        <div className="flex-1 flex flex-col w-full">
+        <div className="flex-1 flex flex-col w-full min-w-0">
           {/* Header */}
-          <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-border bg-card px-4 md:px-6">
+          <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b border-border bg-card px-4 md:px-6">
             <SidebarTrigger className="md:hidden" />
             
             {/* Tenant Selector - Hidden on mobile */}
@@ -89,12 +89,7 @@ const ResponsiveAppLayout: React.FC<ResponsiveAppLayoutProps> = ({ children }) =
               </Button>
 
               {/* Notifications */}
-              <Button variant="ghost" size="icon" className="relative h-9 w-9">
-                <Bell className="h-4 w-4" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                  3
-                </Badge>
-              </Button>
+              <NotificationDropdown />
 
               {/* User Menu */}
               <DropdownMenu>
@@ -116,7 +111,7 @@ const ResponsiveAppLayout: React.FC<ResponsiveAppLayoutProps> = ({ children }) =
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
                     <User className="mr-2 h-4 w-4" />
                     Profile
                   </DropdownMenuItem>
@@ -131,7 +126,7 @@ const ResponsiveAppLayout: React.FC<ResponsiveAppLayoutProps> = ({ children }) =
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
+          <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto relative">
             {children}
           </main>
         </div>
