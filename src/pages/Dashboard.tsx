@@ -54,31 +54,30 @@ const topItems = [
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground">Today's overview and quick actions</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Today's overview and quick actions</p>
         </div>
-        <Space>
-          <Button type="primary" icon={<PlusOutlined />} size="large">
-            New Order
-          </Button>
-        </Space>
+        <Button type="primary" icon={<PlusOutlined />} size="middle" className="w-full sm:w-auto">
+          New Order
+        </Button>
       </div>
 
       {/* KPIs */}
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
+      <Row gutter={[12, 12]}>
+        <Col xs={12} sm={12} md={12} lg={6}>
+          <Card size="small" className="h-full">
             <Statistic
-              title="Today's Sales"
+              title={<span className="text-xs sm:text-sm">Today's Sales</span>}
               value={442000}
               precision={2}
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={{ color: '#3f8600', fontSize: '18px' }}
               prefix={<DollarOutlined />}
               suffix={
-                <span className="text-sm ml-2">
+                <span className="text-xs ml-1 hidden sm:inline">
                   <ArrowUpOutlined /> 12.3%
                 </span>
               }
@@ -86,38 +85,39 @@ const Dashboard: React.FC = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
+        <Col xs={12} sm={12} md={12} lg={6}>
+          <Card size="small" className="h-full">
             <Statistic
-              title="Orders"
+              title={<span className="text-xs sm:text-sm">Orders</span>}
               value={156}
-              valueStyle={{ color: '#FF6B35' }}
+              valueStyle={{ color: '#FF6B35', fontSize: '18px' }}
               prefix={<ShoppingOutlined />}
               suffix={
-                <span className="text-sm ml-2">
+                <span className="text-xs ml-1 hidden sm:inline">
                   <ArrowUpOutlined /> 8.1%
                 </span>
               }
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
+        <Col xs={12} sm={12} md={12} lg={6}>
+          <Card size="small" className="h-full">
             <Statistic
-              title="Avg Order Value"
+              title={<span className="text-xs sm:text-sm">Avg Order Value</span>}
               value={2833}
               precision={2}
+              valueStyle={{ fontSize: '18px' }}
               prefix={<DollarOutlined />}
               formatter={(value) => formatCurrency(value as number)}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
+        <Col xs={12} sm={12} md={12} lg={6}>
+          <Card size="small" className="h-full">
             <Statistic
-              title="Running KOTs"
+              title={<span className="text-xs sm:text-sm">Running KOTs</span>}
               value={12}
-              valueStyle={{ color: '#cf1322' }}
+              valueStyle={{ color: '#cf1322', fontSize: '18px' }}
               prefix={<FireOutlined />}
             />
           </Card>
@@ -125,119 +125,127 @@ const Dashboard: React.FC = () => {
       </Row>
 
       {/* Charts */}
-      <Row gutter={[16, 16]}>
+      <Row gutter={[12, 12]}>
         <Col xs={24} lg={16}>
-          <Card title="Sales by Hour" className="h-full">
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={salesByHour}>
-                <defs>
-                  <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FF6B35" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#FF6B35" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" />
-                <YAxis />
-                <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                <Area 
-                  type="monotone" 
-                  dataKey="sales" 
-                  stroke="#FF6B35" 
-                  fillOpacity={1} 
-                  fill="url(#colorSales)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+          <Card title={<span className="text-sm sm:text-base">Sales by Hour</span>} size="small" className="h-full">
+            <div className="h-[200px] sm:h-[250px] md:h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={salesByHour}>
+                  <defs>
+                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#FF6B35" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#FF6B35" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="hour" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="sales" 
+                    stroke="#FF6B35" 
+                    fillOpacity={1} 
+                    fill="url(#colorSales)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </Card>
         </Col>
 
         <Col xs={24} lg={8}>
-          <Card title="Category Mix" className="h-full">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={categoryMix}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {categoryMix.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <Card title={<span className="text-sm sm:text-base">Category Mix</span>} size="small" className="h-full">
+            <div className="h-[200px] sm:h-[250px] md:h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={categoryMix}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    outerRadius="70%"
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {categoryMix.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </Card>
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[12, 12]}>
         <Col xs={24} lg={12}>
-          <Card title="Payment Methods">
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={paymentMix}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="method" />
-                <YAxis />
-                <Tooltip formatter={(value) => formatCurrency(value as number)} />
-                <Bar dataKey="amount" fill="#F7931E" />
-              </BarChart>
-            </ResponsiveContainer>
+          <Card title={<span className="text-sm sm:text-base">Payment Methods</span>} size="small">
+            <div className="h-[180px] sm:h-[220px] md:h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={paymentMix}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="method" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip formatter={(value) => formatCurrency(value as number)} />
+                  <Bar dataKey="amount" fill="#F7931E" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </Card>
         </Col>
 
         <Col xs={24} lg={12}>
-          <Card title="Top 5 Items">
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={topItems} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" width={120} />
-                <Tooltip />
-                <Bar dataKey="orders" fill="#37B7C3" />
-              </BarChart>
-            </ResponsiveContainer>
+          <Card title={<span className="text-sm sm:text-base">Top 5 Items</span>} size="small">
+            <div className="h-[180px] sm:h-[220px] md:h-[250px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={topItems} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" tick={{ fontSize: 10 }} />
+                  <YAxis dataKey="name" type="category" width={80} tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Bar dataKey="orders" fill="#37B7C3" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </Card>
         </Col>
       </Row>
 
       {/* Quick Stats */}
-      <Row gutter={[16, 16]}>
+      <Row gutter={[12, 12]}>
         <Col xs={24} md={8}>
-          <Card title="Tables Status">
+          <Card title={<span className="text-sm sm:text-base">Tables Status</span>} size="small">
             <Row gutter={[8, 8]}>
               <Col span={12}>
-                <Statistic title="Occupied" value={8} suffix="/ 25" valueStyle={{ fontSize: '24px' }} />
+                <Statistic title="Occupied" value={8} suffix="/ 25" valueStyle={{ fontSize: '20px' }} />
               </Col>
               <Col span={12}>
-                <Statistic title="Reserved" value={3} valueStyle={{ fontSize: '24px', color: '#F7931E' }} />
+                <Statistic title="Reserved" value={3} valueStyle={{ fontSize: '20px', color: '#F7931E' }} />
               </Col>
               <Col span={12}>
-                <Statistic title="Vacant" value={12} valueStyle={{ fontSize: '24px', color: '#52c41a' }} />
+                <Statistic title="Vacant" value={12} valueStyle={{ fontSize: '20px', color: '#52c41a' }} />
               </Col>
               <Col span={12}>
-                <Statistic title="Cleaning" value={2} valueStyle={{ fontSize: '24px', color: '#888' }} />
+                <Statistic title="Cleaning" value={2} valueStyle={{ fontSize: '20px', color: '#888' }} />
               </Col>
             </Row>
           </Card>
         </Col>
 
         <Col xs={24} md={8}>
-          <Card title="UPI Payments">
+          <Card title={<span className="text-sm sm:text-base">UPI Payments</span>} size="small">
             <Statistic
               title="Success Rate"
               value={96.8}
               precision={1}
               suffix="%"
-              valueStyle={{ color: '#52c41a', fontSize: '36px' }}
+              valueStyle={{ color: '#52c41a', fontSize: '28px' }}
             />
-            <div className="mt-4 text-muted-foreground">
+            <div className="mt-3 text-muted-foreground text-sm">
               <div>Total Transactions: 124</div>
               <div>Failed: 4</div>
             </div>
@@ -245,9 +253,9 @@ const Dashboard: React.FC = () => {
         </Col>
 
         <Col xs={24} md={8}>
-          <Card title="Customer Insights">
-            <Statistic title="Today's Customers" value={89} suffix="guests" valueStyle={{ fontSize: '28px' }} />
-            <div className="mt-4 space-y-1 text-sm text-muted-foreground">
+          <Card title={<span className="text-sm sm:text-base">Customer Insights</span>} size="small">
+            <Statistic title="Today's Customers" value={89} suffix="guests" valueStyle={{ fontSize: '24px' }} />
+            <div className="mt-3 space-y-1 text-sm text-muted-foreground">
               <div>New: 12</div>
               <div>Returning: 77</div>
               <div>Avg Bill: {formatCurrency(2833)}</div>

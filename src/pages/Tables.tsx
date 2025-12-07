@@ -31,54 +31,55 @@ const Tables: React.FC = () => {
 
   const tabItems = areas.map(area => ({
     key: area.id,
-    label: area.name,
+    label: <span className="text-xs sm:text-sm">{area.name}</span>,
     children: (
-      <Row gutter={[16, 16]}>
+      <Row gutter={[8, 8]}>
         {filteredTables.map(table => (
-          <Col xs={12} sm={8} md={6} lg={4} key={table.id}>
+          <Col xs={12} sm={8} md={6} lg={4} xl={3} key={table.id}>
             <Badge.Ribbon 
-              text={table.status.toUpperCase()} 
+              text={<span className="text-[10px]">{table.status.toUpperCase()}</span>}
               color={getStatusBadgeColor(table.status)}
             >
               <Card
                 hoverable
                 className="text-center"
+                size="small"
                 style={{ 
                   borderColor: getStatusBadgeColor(table.status),
                   borderWidth: 2,
                 }}
               >
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <TableOutlined 
                     style={{ 
-                      fontSize: 48, 
+                      fontSize: 28, 
                       color: getStatusBadgeColor(table.status) 
                     }} 
                   />
                   <div>
-                    <div className="font-bold text-xl">{table.name}</div>
-                    <div className="text-muted-foreground text-sm">
-                      Capacity: {table.capacity}
+                    <div className="font-bold text-sm sm:text-base">{table.name}</div>
+                    <div className="text-muted-foreground text-[10px] sm:text-xs">
+                      Seats: {table.capacity}
                     </div>
                   </div>
                   {table.status === 'occupied' && (
-                    <Button type="primary" size="small" block>
-                      View Order
+                    <Button type="primary" size="small" block className="text-xs">
+                      View
                     </Button>
                   )}
                   {table.status === 'vacant' && (
-                    <Button type="default" size="small" block>
+                    <Button type="default" size="small" block className="text-xs">
                       Assign
                     </Button>
                   )}
                   {table.status === 'reserved' && (
-                    <Button type="default" size="small" block>
+                    <Button type="default" size="small" block className="text-xs">
                       Check In
                     </Button>
                   )}
                   {table.status === 'cleaning' && (
-                    <Button type="default" size="small" block disabled>
-                      Cleaning...
+                    <Button type="default" size="small" block disabled className="text-xs">
+                      Cleaning
                     </Button>
                   )}
                 </div>
@@ -98,58 +99,61 @@ const Tables: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Table Management</h1>
-          <p className="text-muted-foreground">Monitor and manage table status</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Table Management</h1>
+          <p className="text-sm text-muted-foreground">Monitor and manage table status</p>
         </div>
-        <Button type="primary" icon={<PlusOutlined />} size="large">
+        <Button type="primary" icon={<PlusOutlined />} size="middle" className="w-full sm:w-auto">
           Add Table
         </Button>
       </div>
 
-      <Row gutter={[16, 16]}>
+      {/* Status Cards */}
+      <Row gutter={[8, 8]}>
         <Col xs={12} sm={6}>
-          <Card>
+          <Card size="small">
             <div className="text-center">
-              <div className="text-3xl font-bold text-success">{statusCounts.vacant}</div>
-              <div className="text-muted-foreground">Vacant</div>
+              <div className="text-xl sm:text-2xl font-bold text-success">{statusCounts.vacant}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Vacant</div>
             </div>
           </Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card>
+          <Card size="small">
             <div className="text-center">
-              <div className="text-3xl font-bold text-destructive">{statusCounts.occupied}</div>
-              <div className="text-muted-foreground">Occupied</div>
+              <div className="text-xl sm:text-2xl font-bold text-destructive">{statusCounts.occupied}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Occupied</div>
             </div>
           </Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card>
+          <Card size="small">
             <div className="text-center">
-              <div className="text-3xl font-bold text-warning">{statusCounts.reserved}</div>
-              <div className="text-muted-foreground">Reserved</div>
+              <div className="text-xl sm:text-2xl font-bold text-warning">{statusCounts.reserved}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Reserved</div>
             </div>
           </Card>
         </Col>
         <Col xs={12} sm={6}>
-          <Card>
+          <Card size="small">
             <div className="text-center">
-              <div className="text-3xl font-bold text-muted-foreground">{statusCounts.cleaning}</div>
-              <div className="text-muted-foreground">Cleaning</div>
+              <div className="text-xl sm:text-2xl font-bold text-muted-foreground">{statusCounts.cleaning}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Cleaning</div>
             </div>
           </Card>
         </Col>
       </Row>
 
-      <Card>
+      {/* Tables Grid */}
+      <Card size="small">
         <Tabs 
           activeKey={selectedArea}
           onChange={setSelectedArea}
           items={tabItems}
-          size="large"
+          size="small"
         />
       </Card>
     </div>
