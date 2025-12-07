@@ -77,25 +77,27 @@ const Orders: React.FC = () => {
       dataIndex: 'orderNumber',
       key: 'orderNumber',
       fixed: 'left' as const,
-      width: 120,
-      render: (text: string) => <span className="font-semibold">{text}</span>,
+      width: 100,
+      render: (text: string) => <span className="font-semibold text-xs sm:text-sm">{text}</span>,
     },
     {
-      title: 'Date & Time',
+      title: 'Date',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 180,
-      render: (date: Date) => dayjs(date).format('DD MMM YYYY HH:mm'),
+      width: 120,
+      responsive: ['md'] as any,
+      render: (date: Date) => dayjs(date).format('DD MMM HH:mm'),
     },
     {
       title: 'Channel',
       dataIndex: 'channel',
       key: 'channel',
-      width: 130,
+      width: 100,
+      responsive: ['sm'] as any,
       render: (channel: OrderChannel) => (
         <Space>
           <span>{channelIcons[channel]}</span>
-          <span className="capitalize">{channel}</span>
+          <span className="capitalize text-xs hidden md:inline">{channel}</span>
         </Space>
       ),
     },
@@ -103,37 +105,39 @@ const Orders: React.FC = () => {
       title: 'Items',
       dataIndex: 'items',
       key: 'items',
-      width: 80,
+      width: 60,
+      responsive: ['lg'] as any,
       render: (items: any[]) => items.length,
     },
     {
       title: 'Total',
       dataIndex: 'total',
       key: 'total',
-      width: 120,
+      width: 100,
       render: (amount: number) => (
-        <span className="font-semibold">{formatCurrency(amount)}</span>
+        <span className="font-semibold text-xs sm:text-sm">{formatCurrency(amount)}</span>
       ),
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      width: 130,
+      width: 100,
       render: (status: OrderStatus) => (
-        <Tag color={statusColors[status]}>{status}</Tag>
+        <Tag color={statusColors[status]} className="text-xs">{status}</Tag>
       ),
     },
     {
       title: 'Payment',
       dataIndex: 'payments',
       key: 'payments',
-      width: 100,
+      width: 80,
+      responsive: ['md'] as any,
       render: (payments: any[]) => (
         payments.length > 0 ? (
-          <Badge status="success" text="Paid" />
+          <Badge status="success" text={<span className="text-xs">Paid</span>} />
         ) : (
-          <Badge status="warning" text="Pending" />
+          <Badge status="warning" text={<span className="text-xs">Pending</span>} />
         )
       ),
     },
@@ -141,22 +145,19 @@ const Orders: React.FC = () => {
       title: 'Actions',
       key: 'actions',
       fixed: 'right' as const,
-      width: 150,
+      width: 100,
       render: (_: any, record: typeof mockOrders[0]) => (
-        <Space>
+        <Space size="small">
           <Button
             type="link"
+            size="small"
             icon={<EyeOutlined />}
             onClick={() => {
               setSelectedOrder(record);
               setDrawerVisible(true);
             }}
-          >
-            View
-          </Button>
-          <Button type="link" icon={<PrinterOutlined />}>
-            Print
-          </Button>
+          />
+          <Button type="link" size="small" icon={<PrinterOutlined />} className="hidden sm:inline-flex" />
         </Space>
       ),
     },
@@ -172,59 +173,63 @@ const Orders: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Orders</h1>
-        <p className="text-muted-foreground">Manage all orders and track status</p>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Orders</h1>
+        <p className="text-sm text-muted-foreground">Manage all orders and track status</p>
       </div>
 
       {/* Stats */}
-      <Row gutter={16}>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Total Orders" value={stats.total} />
+      <Row gutter={[12, 12]}>
+        <Col xs={12} sm={12} md={6}>
+          <Card size="small">
+            <Statistic title={<span className="text-xs">Total Orders</span>} value={stats.total} valueStyle={{ fontSize: '18px' }} />
           </Card>
         </Col>
-        <Col span={6}>
-          <Card>
+        <Col xs={12} sm={12} md={6}>
+          <Card size="small">
             <Statistic 
-              title="Total Revenue" 
+              title={<span className="text-xs">Total Revenue</span>}
               value={stats.revenue} 
               prefix="₹"
-              precision={2}
+              precision={0}
+              valueStyle={{ fontSize: '18px' }}
             />
           </Card>
         </Col>
-        <Col span={6}>
-          <Card>
+        <Col xs={12} sm={12} md={6}>
+          <Card size="small">
             <Statistic 
-              title="Avg Order Value" 
+              title={<span className="text-xs">Avg Order Value</span>}
               value={stats.avgOrder} 
               prefix="₹"
-              precision={2}
+              precision={0}
+              valueStyle={{ fontSize: '18px' }}
             />
           </Card>
         </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="Paid Orders" value={stats.paid} suffix={`/ ${stats.total}`} />
+        <Col xs={12} sm={12} md={6}>
+          <Card size="small">
+            <Statistic title={<span className="text-xs">Paid Orders</span>} value={stats.paid} suffix={`/ ${stats.total}`} valueStyle={{ fontSize: '18px' }} />
           </Card>
         </Col>
       </Row>
 
       {/* Filters */}
-      <Card>
-        <Space wrap size="large">
+      <Card size="small">
+        <div className="flex flex-wrap gap-2">
           <Input
             placeholder="Search orders..."
             prefix={<SearchOutlined />}
-            style={{ width: 250 }}
+            className="w-full sm:w-48"
+            size="middle"
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
           />
           <Select
             placeholder="Status"
-            style={{ width: 150 }}
+            className="w-full sm:w-32"
+            size="middle"
             allowClear
             value={filters.status}
             onChange={(value) => setFilters({ ...filters, status: value })}
@@ -238,7 +243,8 @@ const Orders: React.FC = () => {
           </Select>
           <Select
             placeholder="Channel"
-            style={{ width: 150 }}
+            className="w-full sm:w-32"
+            size="middle"
             allowClear
             value={filters.channel}
             onChange={(value) => setFilters({ ...filters, channel: value })}
@@ -249,40 +255,41 @@ const Orders: React.FC = () => {
             <Option value="online">Online</Option>
           </Select>
           <RangePicker
+            className="w-full sm:w-auto"
+            size="middle"
             value={filters.dateRange}
             onChange={(dates) => setFilters({ ...filters, dateRange: dates })}
           />
-          <Button icon={<ReloadOutlined />}>Refresh</Button>
-        </Space>
+          <Button icon={<ReloadOutlined />} size="middle">Refresh</Button>
+        </div>
       </Card>
 
       {/* Orders Table */}
-      <Card>
+      <Card size="small">
         <Table
           columns={columns}
           dataSource={filteredOrders}
           rowKey="id"
-          scroll={{ x: 1200 }}
-          pagination={{ pageSize: 10, showSizeChanger: true }}
+          scroll={{ x: 800 }}
+          pagination={{ pageSize: 10, showSizeChanger: false, size: 'small' }}
+          size="small"
         />
       </Card>
 
       {/* Order Details Drawer */}
       <Drawer
         title={`Order ${selectedOrder?.orderNumber}`}
-        width={640}
+        width={window.innerWidth < 768 ? '100%' : 640}
         open={drawerVisible}
         onClose={() => setDrawerVisible(false)}
         extra={
-          <Space>
-            <Button icon={<PrinterOutlined />}>Print</Button>
-          </Space>
+          <Button icon={<PrinterOutlined />} size="small">Print</Button>
         }
       >
         {selectedOrder && (
-          <div className="space-y-6">
-            <Descriptions bordered column={2}>
-              <Descriptions.Item label="Order Number" span={2}>
+          <div className="space-y-4">
+            <Descriptions bordered column={1} size="small">
+              <Descriptions.Item label="Order Number">
                 {selectedOrder.orderNumber}
               </Descriptions.Item>
               <Descriptions.Item label="Channel">
@@ -296,13 +303,13 @@ const Orders: React.FC = () => {
                   {selectedOrder.status}
                 </Tag>
               </Descriptions.Item>
-              <Descriptions.Item label="Created At" span={2}>
+              <Descriptions.Item label="Created At">
                 {dayjs(selectedOrder.createdAt).format('DD MMM YYYY HH:mm:ss')}
               </Descriptions.Item>
             </Descriptions>
 
             <div>
-              <h3 className="font-semibold mb-3">Items</h3>
+              <h3 className="font-semibold mb-3 text-sm">Items</h3>
               <Table
                 dataSource={selectedOrder.items}
                 rowKey="id"
@@ -310,18 +317,18 @@ const Orders: React.FC = () => {
                 size="small"
                 columns={[
                   { title: 'Item', dataIndex: 'name', key: 'name' },
-                  { title: 'Qty', dataIndex: 'quantity', key: 'quantity', width: 60 },
+                  { title: 'Qty', dataIndex: 'quantity', key: 'quantity', width: 50 },
                   { 
                     title: 'Price', 
                     dataIndex: 'price', 
                     key: 'price',
-                    width: 100,
+                    width: 80,
                     render: (price: number) => formatCurrency(price),
                   },
                   { 
                     title: 'Total', 
                     key: 'total',
-                    width: 120,
+                    width: 80,
                     render: (_: any, record: any) => 
                       formatCurrency(record.price * record.quantity),
                   },
@@ -351,7 +358,7 @@ const Orders: React.FC = () => {
 
             {selectedOrder.payments.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3">Payment Details</h3>
+                <h3 className="font-semibold mb-3 text-sm">Payment Details</h3>
                 <Timeline
                   items={selectedOrder.payments.map(payment => ({
                     children: (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Table, Button, Space, Tag, Input, Select, Modal, Form, InputNumber, Switch, message } from 'antd';
+import { Card, Table, Button, Space, Tag, Input, Select, Modal, Form, InputNumber, Switch, message, Row, Col } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import { menuItems as initialMenuItems, categories } from '@/mocks/menu';
 import { formatCurrency } from '@/utils/format';
@@ -38,56 +38,54 @@ const Menu: React.FC = () => {
       title: 'Code',
       dataIndex: 'code',
       key: 'code',
-      width: 100,
+      width: 80,
+      render: (text: string) => <span className="text-xs font-mono">{text}</span>,
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      width: 200,
+      width: 150,
+      render: (text: string) => <span className="text-xs sm:text-sm font-medium">{text}</span>,
     },
     {
       title: 'Category',
       dataIndex: 'categoryId',
       key: 'category',
-      width: 150,
-      render: (catId: string) => categories.find(c => c.id === catId)?.name || '-',
+      width: 100,
+      responsive: ['md'] as any,
+      render: (catId: string) => <span className="text-xs">{categories.find(c => c.id === catId)?.name || '-'}</span>,
     },
     {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      width: 120,
-      render: (price: number) => formatCurrency(price),
+      width: 90,
+      render: (price: number) => <span className="text-xs sm:text-sm font-semibold">{formatCurrency(price)}</span>,
     },
     {
       title: 'Tags',
       dataIndex: 'tags',
       key: 'tags',
-      width: 250,
+      width: 150,
+      responsive: ['lg'] as any,
       render: (tags: string[]) => (
-        <>
-          {tags.map(tag => (
-            <Tag key={tag} color={getTagColor(tag)} className="mb-1">
+        <Space wrap size={2}>
+          {tags.slice(0, 2).map(tag => (
+            <Tag key={tag} color={getTagColor(tag)} className="text-[10px] m-0">
               {tag.toUpperCase()}
             </Tag>
           ))}
-        </>
+        </Space>
       ),
-    },
-    {
-      title: 'Station',
-      dataIndex: 'station',
-      key: 'station',
-      width: 120,
     },
     {
       title: 'Available',
       dataIndex: 'available',
       key: 'available',
-      width: 100,
+      width: 80,
       render: (available: boolean) => (
-        <Tag color={available ? 'success' : 'error'}>
+        <Tag color={available ? 'success' : 'error'} className="text-xs">
           {available ? 'Yes' : 'No'}
         </Tag>
       ),
@@ -95,17 +93,19 @@ const Menu: React.FC = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: 150,
+      width: 100,
       fixed: 'right' as const,
       render: (_: any, record: any) => (
-        <Space>
+        <Space size="small">
           <Button
             type="link"
+            size="small"
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
           />
           <Button
             type="link"
+            size="small"
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record.id)}
@@ -156,51 +156,56 @@ const Menu: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Menu Management</h1>
-          <p className="text-muted-foreground">Manage your menu items, categories, and pricing</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Menu Management</h1>
+          <p className="text-sm text-muted-foreground">Manage menu items and pricing</p>
         </div>
-        <Button type="primary" icon={<PlusOutlined />} size="large" onClick={handleAdd}>
+        <Button type="primary" icon={<PlusOutlined />} size="middle" onClick={handleAdd} className="w-full sm:w-auto">
           Add Item
         </Button>
       </div>
 
-      <Card>
-        <Space direction="vertical" size="middle" className="w-full mb-4">
+      <Card size="small">
+        <Space direction="vertical" size="small" className="w-full mb-4">
           <Input
-            size="large"
             placeholder="Search items..."
             prefix={<SearchOutlined />}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Space wrap>
-            <Button 
-              type={selectedCategory === 'all' ? 'primary' : 'default'}
-              onClick={() => setSelectedCategory('all')}
-            >
-              All Categories
-            </Button>
-            {categories.map(cat => (
-              <Button
-                key={cat.id}
-                type={selectedCategory === cat.id ? 'primary' : 'default'}
-                onClick={() => setSelectedCategory(cat.id)}
+          <div className="overflow-x-auto pb-2">
+            <Space wrap={false} size="small" className="min-w-max">
+              <Button 
+                type={selectedCategory === 'all' ? 'primary' : 'default'}
+                onClick={() => setSelectedCategory('all')}
+                size="small"
               >
-                {cat.name}
+                All
               </Button>
-            ))}
-          </Space>
+              {categories.map(cat => (
+                <Button
+                  key={cat.id}
+                  type={selectedCategory === cat.id ? 'primary' : 'default'}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  size="small"
+                >
+                  {cat.name}
+                </Button>
+              ))}
+            </Space>
+          </div>
         </Space>
 
         <Table
           columns={columns}
           dataSource={filteredItems}
           rowKey="id"
-          scroll={{ x: 1200 }}
-          pagination={{ pageSize: 20 }}
+          scroll={{ x: 700 }}
+          pagination={{ pageSize: 15, size: 'small', showSizeChanger: false }}
+          size="small"
         />
       </Card>
 
@@ -209,7 +214,7 @@ const Menu: React.FC = () => {
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         footer={null}
-        width={600}
+        width={window.innerWidth < 768 ? '100%' : 600}
       >
         <Form
           form={form}
@@ -221,61 +226,71 @@ const Menu: React.FC = () => {
             label="Item Name"
             rules={[{ required: true, message: 'Please enter item name' }]}
           >
-            <Input size="large" />
+            <Input />
           </Form.Item>
 
-          <Form.Item
-            name="code"
-            label="Item Code"
-            rules={[{ required: true, message: 'Please enter item code' }]}
-          >
-            <Input size="large" />
-          </Form.Item>
+          <Row gutter={12}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="code"
+                label="Item Code"
+                rules={[{ required: true, message: 'Please enter item code' }]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="categoryId"
+                label="Category"
+                rules={[{ required: true, message: 'Please select category' }]}
+              >
+                <Select>
+                  {categories.map(cat => (
+                    <Option key={cat.id} value={cat.id}>{cat.name}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item
-            name="categoryId"
-            label="Category"
-            rules={[{ required: true, message: 'Please select category' }]}
-          >
-            <Select size="large">
-              {categories.map(cat => (
-                <Option key={cat.id} value={cat.id}>{cat.name}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[{ required: true, message: 'Please enter price' }]}
-          >
-            <InputNumber size="large" min={0} step={10} className="w-full" prefix="₹" />
-          </Form.Item>
+          <Row gutter={12}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="price"
+                label="Price"
+                rules={[{ required: true, message: 'Please enter price' }]}
+              >
+                <InputNumber min={0} step={10} className="w-full" prefix="₹" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="station"
+                label="Kitchen Station"
+              >
+                <Select>
+                  <Option value="Tandoor">Tandoor</Option>
+                  <Option value="Main Kitchen">Main Kitchen</Option>
+                  <Option value="Fryer">Fryer</Option>
+                  <Option value="Dessert">Dessert</Option>
+                  <Option value="Beverage">Beverage</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
 
           <Form.Item
             name="tags"
             label="Tags"
             initialValue={[]}
           >
-            <Select mode="multiple" size="large">
+            <Select mode="multiple">
               <Option value="veg">Veg</Option>
               <Option value="non-veg">Non-Veg</Option>
               <Option value="jain">Jain</Option>
               <Option value="bestseller">Bestseller</Option>
               <Option value="spicy">Spicy</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="station"
-            label="Kitchen Station"
-          >
-            <Select size="large">
-              <Option value="Tandoor">Tandoor</Option>
-              <Option value="Main Kitchen">Main Kitchen</Option>
-              <Option value="Fryer">Fryer</Option>
-              <Option value="Dessert">Dessert</Option>
-              <Option value="Beverage">Beverage</Option>
             </Select>
           </Form.Item>
 
@@ -286,13 +301,6 @@ const Menu: React.FC = () => {
             initialValue={true}
           >
             <Switch />
-          </Form.Item>
-
-          <Form.Item
-            name="description"
-            label="Description"
-          >
-            <Input.TextArea rows={3} />
           </Form.Item>
 
           <Form.Item>

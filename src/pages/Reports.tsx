@@ -1,36 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  Row,
-  Col,
-  Input,
-  Select,
-  Badge,
-  Button,
-  Space,
-  Table,
-  DatePicker,
-  Statistic,
-} from 'antd';
-import {
-  SearchOutlined,
-  BarChartOutlined,
-  LineChartOutlined,
-  PieChartOutlined,
-  DollarOutlined,
-  ShoppingOutlined,
-  TeamOutlined,
-  InboxOutlined,
-  DownloadOutlined,
-  FilterOutlined,
-} from '@ant-design/icons';
+import { Card, Row, Col, Input, Select, Badge, Button, Space, Table, DatePicker, Statistic } from 'antd';
+import { SearchOutlined, BarChartOutlined, DownloadOutlined } from '@ant-design/icons';
 import { mockReports } from '@/mocks/reports';
 import type { ReportConfig } from '@/mocks/reports';
 import { formatCurrency } from '@/utils/format';
 
 const { Search } = Input;
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
 const Reports: React.FC = () => {
   const [reports] = useState<ReportConfig[]>(mockReports);
@@ -38,236 +14,69 @@ const Reports: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState<string | null>(null);
 
-  const categoryIcons: Record<string, any> = {
-    Sales: <LineChartOutlined />,
-    Operations: <ShoppingOutlined />,
-    Inventory: <InboxOutlined />,
-    CRM: <TeamOutlined />,
-    Financial: <DollarOutlined />,
-  };
+  const categoryColors: Record<string, string> = { Sales: 'blue', Operations: 'orange', Inventory: 'green', CRM: 'purple', Financial: 'gold' };
 
-  const categoryColors: Record<string, string> = {
-    Sales: 'blue',
-    Operations: 'orange',
-    Inventory: 'green',
-    CRM: 'purple',
-    Financial: 'gold',
-  };
-
-  const filteredReports = reports.filter(report => {
-    if (searchQuery && !report.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    if (filterCategory && report.category !== filterCategory) {
-      return false;
-    }
+  const filteredReports = reports.filter(r => {
+    if (searchQuery && !r.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    if (filterCategory && r.category !== filterCategory) return false;
     return true;
   });
 
   const categories = Array.from(new Set(reports.map(r => r.category)));
 
-  // Mock sample data for report view
-  const sampleReportData = [
-    { key: '1', item: 'Butter Chicken', orders: 245, revenue: 85750, avgPrice: 350 },
-    { key: '2', item: 'Paneer Tikka', orders: 189, revenue: 56700, avgPrice: 300 },
-    { key: '3', item: 'Biryani', orders: 312, revenue: 87360, avgPrice: 280 },
-    { key: '4', item: 'Dal Makhani', orders: 156, revenue: 31200, avgPrice: 200 },
-    { key: '5', item: 'Naan', orders: 523, revenue: 20920, avgPrice: 40 },
-  ];
-
-  const sampleReportColumns = [
-    { title: 'Item Name', dataIndex: 'item', key: 'item' },
-    { title: 'Orders', dataIndex: 'orders', key: 'orders', sorter: (a: any, b: any) => a.orders - b.orders },
-    { 
-      title: 'Revenue', 
-      dataIndex: 'revenue', 
-      key: 'revenue',
-      render: (val: number) => formatCurrency(val),
-      sorter: (a: any, b: any) => a.revenue - b.revenue,
-    },
-    { 
-      title: 'Avg Price', 
-      dataIndex: 'avgPrice', 
-      key: 'avgPrice',
-      render: (val: number) => formatCurrency(val),
-    },
-  ];
-
   if (selectedReport) {
     return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
           <div>
-            <Button type="link" onClick={() => setSelectedReport(null)}>
-              ← Back to Reports
-            </Button>
-            <h1 className="text-3xl font-bold text-foreground">{selectedReport.name}</h1>
-            <p className="text-muted-foreground">{selectedReport.description}</p>
+            <Button type="link" onClick={() => setSelectedReport(null)} className="p-0">← Back</Button>
+            <h1 className="text-xl sm:text-2xl font-bold">{selectedReport.name}</h1>
           </div>
-          <Button type="primary" icon={<DownloadOutlined />}>
-            Export CSV
-          </Button>
+          <Button type="primary" icon={<DownloadOutlined />} size="small">Export</Button>
         </div>
-
-        {/* Filters */}
-        <Card>
-          <Space wrap size="large">
-            <RangePicker />
-            <Select placeholder="Outlet" style={{ width: 150 }}>
-              <Option value="all">All Outlets</Option>
-              <Option value="main">Main Branch</Option>
-              <Option value="airport">Airport Branch</Option>
-            </Select>
-            <Select placeholder="Channel" style={{ width: 150 }}>
-              <Option value="all">All Channels</Option>
-              <Option value="dine-in">Dine-In</Option>
-              <Option value="takeaway">Takeaway</Option>
-              <Option value="delivery">Delivery</Option>
-            </Select>
-            <Button icon={<FilterOutlined />}>More Filters</Button>
-          </Space>
-        </Card>
-
-        {/* Summary Stats */}
-        <Row gutter={16}>
-          <Col span={6}>
-            <Card>
-              <Statistic title="Total Orders" value={1425} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <Statistic title="Total Revenue" value={281930} prefix="₹" precision={2} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <Statistic title="Avg Order Value" value={197.83} prefix="₹" precision={2} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <Statistic title="Top Item" value="Biryani" />
-            </Card>
-          </Col>
+        <Row gutter={[8, 8]}>
+          <Col xs={12} sm={6}><Card size="small"><Statistic title={<span className="text-xs">Orders</span>} value={1425} valueStyle={{ fontSize: '16px' }} /></Card></Col>
+          <Col xs={12} sm={6}><Card size="small"><Statistic title={<span className="text-xs">Revenue</span>} value={281930} prefix="₹" valueStyle={{ fontSize: '16px' }} /></Card></Col>
+          <Col xs={12} sm={6}><Card size="small"><Statistic title={<span className="text-xs">Avg Value</span>} value={197} prefix="₹" valueStyle={{ fontSize: '16px' }} /></Card></Col>
+          <Col xs={12} sm={6}><Card size="small"><Statistic title={<span className="text-xs">Top Item</span>} value="Biryani" valueStyle={{ fontSize: '14px' }} /></Card></Col>
         </Row>
-
-        {/* Report Data */}
-        <Card title="Report Data">
-          <Table
-            columns={sampleReportColumns}
-            dataSource={sampleReportData}
-            pagination={{ pageSize: 10, showSizeChanger: true }}
-          />
-        </Card>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">Reports & Analytics</h1>
-        <p className="text-muted-foreground">Comprehensive business insights and analytics</p>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Reports</h1>
+        <p className="text-sm text-muted-foreground">Business insights and analytics</p>
       </div>
 
-      {/* Stats */}
-      <Row gutter={16}>
-        <Col span={6}>
-          <Card>
-            <Statistic 
-              title="Total Reports" 
-              value={reports.length} 
-              prefix={<BarChartOutlined />}
-            />
-          </Card>
-        </Col>
-        {categories.map(cat => (
-          <Col span={6} key={cat}>
-            <Card>
-              <Statistic 
-                title={cat}
-                value={reports.filter(r => r.category === cat).length}
-                prefix={categoryIcons[cat]}
-              />
-            </Card>
-          </Col>
-        ))}
-      </Row>
-
-      {/* Search & Filter */}
-      <Card>
-        <Space size="large" wrap>
-          <Search
-            placeholder="Search reports..."
-            prefix={<SearchOutlined />}
-            style={{ width: 300 }}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            allowClear
-          />
-          <Select
-            placeholder="All Categories"
-            style={{ width: 200 }}
-            allowClear
-            value={filterCategory}
-            onChange={setFilterCategory}
-          >
-            {categories.map(cat => (
-              <Option key={cat} value={cat}>
-                <Space>
-                  {categoryIcons[cat]}
-                  {cat}
-                </Space>
-              </Option>
-            ))}
+      <Card size="small">
+        <div className="flex flex-wrap gap-2">
+          <Search placeholder="Search..." className="w-full sm:w-48" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} allowClear size="small" />
+          <Select placeholder="Category" className="w-full sm:w-36" allowClear value={filterCategory} onChange={setFilterCategory} size="small">
+            {categories.map(c => <Option key={c} value={c}>{c}</Option>)}
           </Select>
-          <Badge count={filteredReports.length} showZero>
-            <Button>Reports</Button>
-          </Badge>
-        </Space>
+        </div>
       </Card>
 
-      {/* Reports Grid */}
-      <Row gutter={[16, 16]}>
+      <Row gutter={[8, 8]}>
         {filteredReports.map(report => (
-          <Col xs={24} sm={12} lg={8} key={report.id}>
-            <Card
-              hoverable
-              onClick={() => setSelectedReport(report)}
-              className="h-full"
-            >
-              <Space direction="vertical" size="middle" className="w-full">
-                <div className="flex justify-between items-start">
-                  <div className="text-3xl">
-                    {categoryIcons[report.category]}
-                  </div>
-                  <Badge 
-                    color={categoryColors[report.category]} 
-                    text={report.category}
-                  />
+          <Col xs={24} sm={12} md={8} lg={6} key={report.id}>
+            <Card hoverable onClick={() => setSelectedReport(report)} size="small">
+              <Space direction="vertical" size="small" className="w-full">
+                <div className="flex justify-between items-center">
+                  <BarChartOutlined className="text-xl" />
+                  <Badge color={categoryColors[report.category]} text={<span className="text-xs">{report.category}</span>} />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">{report.name}</h3>
-                  <p className="text-sm text-muted-foreground">{report.description}</p>
-                </div>
-                <Button type="primary" block icon={<BarChartOutlined />}>
-                  View Report
-                </Button>
+                <h3 className="text-sm font-semibold">{report.name}</h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">{report.description}</p>
+                <Button type="primary" block size="small" icon={<BarChartOutlined />}>View</Button>
               </Space>
             </Card>
           </Col>
         ))}
       </Row>
-
-      {filteredReports.length === 0 && (
-        <Card>
-          <div className="text-center p-8 text-muted-foreground">
-            <SearchOutlined style={{ fontSize: 48 }} />
-            <p className="mt-4">No reports found matching your criteria</p>
-          </div>
-        </Card>
-      )}
     </div>
   );
 };

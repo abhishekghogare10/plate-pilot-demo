@@ -79,14 +79,14 @@ const KDS: React.FC = () => {
 
   const getElapsedTime = (createdAt: Date) => {
     const elapsed = Math.floor((Date.now() - createdAt.getTime()) / 60000);
-    return `${elapsed} min ago`;
+    return `${elapsed}m`;
   };
 
   const getCardBorderColor = (kot: KOTItem) => {
     const elapsed = Math.floor((Date.now() - kot.createdAt.getTime()) / 60000);
-    if (elapsed > 15) return '#ff4d4f'; // Red for > 15 min
-    if (elapsed > 10) return '#faad14'; // Orange for > 10 min
-    return '#52c41a'; // Green for recent
+    if (elapsed > 15) return '#ff4d4f';
+    if (elapsed > 10) return '#faad14';
+    return '#52c41a';
   };
 
   const handleStart = (id: string) => {
@@ -116,39 +116,40 @@ const KDS: React.FC = () => {
     return {
       key: station,
       label: (
-        <span>
-          {station} <Badge count={count} style={{ backgroundColor: '#FF6B35' }} />
+        <span className="text-xs sm:text-sm">
+          {station} <Badge count={count} size="small" style={{ backgroundColor: '#FF6B35' }} />
         </span>
       ),
       children: (
-        <Row gutter={[16, 16]}>
+        <Row gutter={[8, 8]}>
           {(station === 'All' ? kots : kots.filter(k => k.station === station)).map(kot => (
-            <Col xs={24} sm={12} lg={8} xl={6} key={kot.id}>
+            <Col xs={24} sm={12} md={8} lg={6} key={kot.id}>
               <Card
                 className="h-full"
+                size="small"
                 style={{ 
-                  borderLeft: `6px solid ${getCardBorderColor(kot)}`,
+                  borderLeft: `4px solid ${getCardBorderColor(kot)}`,
                 }}
                 title={
                   <div className="flex justify-between items-center">
-                    <Space>
-                      <span className="font-bold">{kot.orderNumber}</span>
-                      {kot.table && <Tag>{kot.table}</Tag>}
+                    <Space size="small">
+                      <span className="font-bold text-sm">{kot.orderNumber}</span>
+                      {kot.table && <Tag className="text-xs">{kot.table}</Tag>}
                     </Space>
-                    <Tag color={getStatusColor(kot.status)}>{kot.status}</Tag>
+                    <Tag color={getStatusColor(kot.status)} className="text-xs">{kot.status}</Tag>
                   </div>
                 }
               >
-                <Space direction="vertical" className="w-full" size="middle">
+                <Space direction="vertical" className="w-full" size="small">
                   <div>
                     {kot.items.map((item, idx) => (
-                      <div key={idx} className="mb-2">
-                        <div className="flex justify-between">
-                          <span className="font-semibold">{item.name}</span>
-                          <Badge count={item.quantity} style={{ backgroundColor: '#FF6B35' }} />
+                      <div key={idx} className="mb-1">
+                        <div className="flex justify-between items-center">
+                          <span className="font-semibold text-xs sm:text-sm">{item.name}</span>
+                          <Badge count={item.quantity} size="small" style={{ backgroundColor: '#FF6B35' }} />
                         </div>
                         {item.notes && (
-                          <div className="text-xs text-muted-foreground mt-1 italic">
+                          <div className="text-[10px] text-muted-foreground italic">
                             Note: {item.notes}
                           </div>
                         )}
@@ -156,15 +157,15 @@ const KDS: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <ClockCircleOutlined className="mr-2" />
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <ClockCircleOutlined className="mr-1" />
                     <span>{getElapsedTime(kot.createdAt)}</span>
-                    <span className="mx-2">•</span>
+                    <span className="mx-1">•</span>
                     <span>{formatTime(kot.createdAt)}</span>
                   </div>
 
                   {kot.station && (
-                    <Tag icon={<FireOutlined />} color="orange">
+                    <Tag icon={<FireOutlined />} color="orange" className="text-xs">
                       {kot.station}
                     </Tag>
                   )}
@@ -176,6 +177,7 @@ const KDS: React.FC = () => {
                         icon={<PlayCircleOutlined />}
                         onClick={() => handleStart(kot.id)}
                         block
+                        size="small"
                       >
                         Start
                       </Button>
@@ -186,14 +188,15 @@ const KDS: React.FC = () => {
                         icon={<CheckOutlined />}
                         onClick={() => handleReady(kot.id)}
                         block
+                        size="small"
                         style={{ backgroundColor: '#52c41a' }}
                       >
-                        Mark Ready
+                        Ready
                       </Button>
                     )}
                     {kot.status === 'Ready' && (
-                      <Button type="default" disabled block>
-                        Completed
+                      <Button type="default" disabled block size="small">
+                        Done
                       </Button>
                     )}
                   </div>
@@ -203,7 +206,7 @@ const KDS: React.FC = () => {
           ))}
           {(station === 'All' ? kots : kots.filter(k => k.station === station)).length === 0 && (
             <Col span={24}>
-              <Card className="text-center text-muted-foreground py-8">
+              <Card className="text-center text-muted-foreground py-8" size="small">
                 No KOTs in {station}
               </Card>
             </Col>
@@ -214,52 +217,48 @@ const KDS: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-4 md:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Kitchen Display System</h1>
-          <p className="text-muted-foreground">Manage kitchen order tickets in real-time</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Kitchen Display</h1>
+          <p className="text-sm text-muted-foreground">Manage kitchen order tickets</p>
         </div>
-        <Space>
-          <Badge count={kots.filter(k => k.status === 'Pending').length} offset={[-5, 5]}>
-            <Card className="bg-destructive/10">
-              <div className="text-center px-4">
-                <div className="text-2xl font-bold text-destructive">
-                  {kots.filter(k => k.status === 'Pending').length}
-                </div>
-                <div className="text-xs text-muted-foreground">Pending</div>
+        <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+          <Card size="small" className="bg-destructive/10 flex-shrink-0">
+            <div className="text-center px-2">
+              <div className="text-lg sm:text-xl font-bold text-destructive">
+                {kots.filter(k => k.status === 'Pending').length}
               </div>
-            </Card>
-          </Badge>
-          <Badge count={kots.filter(k => k.status === 'In-Progress').length} offset={[-5, 5]}>
-            <Card className="bg-warning/10">
-              <div className="text-center px-4">
-                <div className="text-2xl font-bold text-warning">
-                  {kots.filter(k => k.status === 'In-Progress').length}
-                </div>
-                <div className="text-xs text-muted-foreground">In Progress</div>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">Pending</div>
+            </div>
+          </Card>
+          <Card size="small" className="bg-warning/10 flex-shrink-0">
+            <div className="text-center px-2">
+              <div className="text-lg sm:text-xl font-bold text-warning">
+                {kots.filter(k => k.status === 'In-Progress').length}
               </div>
-            </Card>
-          </Badge>
-          <Badge count={kots.filter(k => k.status === 'Ready').length} offset={[-5, 5]}>
-            <Card className="bg-success/10">
-              <div className="text-center px-4">
-                <div className="text-2xl font-bold text-success">
-                  {kots.filter(k => k.status === 'Ready').length}
-                </div>
-                <div className="text-xs text-muted-foreground">Ready</div>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">In Progress</div>
+            </div>
+          </Card>
+          <Card size="small" className="bg-success/10 flex-shrink-0">
+            <div className="text-center px-2">
+              <div className="text-lg sm:text-xl font-bold text-success">
+                {kots.filter(k => k.status === 'Ready').length}
               </div>
-            </Card>
-          </Badge>
-        </Space>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">Ready</div>
+            </div>
+          </Card>
+        </div>
       </div>
 
-      <Card>
+      <Card size="small">
         <Tabs
           activeKey={activeStation}
           onChange={setActiveStation}
           items={tabItems}
-          size="large"
+          size="small"
+          tabBarStyle={{ marginBottom: 12 }}
         />
       </Card>
     </div>
